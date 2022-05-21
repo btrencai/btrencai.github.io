@@ -1,8 +1,283 @@
-<!DOCTYPE html>
-<html>
+
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="sidebar-visible no-js light">
+<head>
+
+<meta charset="UTF-8">
+<title>PanDownload - PanDownload</title>
+
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta name="description" content="PanDownload网盘下载工具">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff" />
+<link rel="shortcut icon" href="favicon.png">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/general.css">
+<link rel="stylesheet" href="css/chrome.css">
+<link rel="stylesheet" href="css/print.css" media="print">
+
+<link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+<link rel="stylesheet" href="fonts/fonts.css">
+
+<link rel="stylesheet" href="highlight.css">
+<link rel="stylesheet" href="tomorrow-night.css">
+<link rel="stylesheet" href="ayu-highlight.css">
+
+<script async src='/cdn-cgi/bm/cv/669835187/api.js'></script></head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
-<p>zzm的网站.</p>
-</body>
+
+<script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+<script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+<script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+<script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+<nav id="sidebar" class="sidebar" aria-label="Table of contents">
+<div class="sidebar-scrollbox">
+<ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html" class="active">PanDownload</a></li><li class="chapter-item expanded "><a href="document.html"><strong aria-hidden="true">1.</strong> 使用说明</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="document/login.html"><strong aria-hidden="true">1.1.</strong> 账号登陆</a></li><li class="chapter-item expanded "><a href="document/download.html"><strong aria-hidden="true">1.2.</strong> 文件下载</a></li><li class="chapter-item expanded "><a href="document/share.html"><strong aria-hidden="true">1.3.</strong> 打开分享链接</a></li><li class="chapter-item expanded "><a href="document/unzip.html"><strong aria-hidden="true">1.4.</strong> 在线解压</a></li><li class="chapter-item expanded "><a href="document/clouddl.html"><strong aria-hidden="true">1.5.</strong> 离线下载</a></li><li class="chapter-item expanded "><a href="document/anime.html"><strong aria-hidden="true">1.6.</strong> 新番下载</a></li><li class="chapter-item expanded "><a href="document/remote.html"><strong aria-hidden="true">1.7.</strong> 远程下载</a></li><li class="chapter-item expanded "><a href="document/accelerate.html"><strong aria-hidden="true">1.8.</strong> 加速链接</a></li><li class="chapter-item expanded "><a href="document/settings.html"><strong aria-hidden="true">1.9.</strong> 设置</a></li></ol></li><li class="chapter-item expanded "><a href="faq.html"><strong aria-hidden="true">2.</strong> 常见问题</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="faq/connect.html"><strong aria-hidden="true">2.1.</strong> 连接服务器失败</a></li><li class="chapter-item expanded "><a href="faq/initaria2.html"><strong aria-hidden="true">2.2.</strong> 初始化下载引擎失败</a></li><li class="chapter-item expanded "><a href="faq/initscript.html"><strong aria-hidden="true">2.3.</strong> 初始化脚本失败</a></li><li class="chapter-item expanded "><a href="faq/login.html"><strong aria-hidden="true">2.4.</strong> 无法登录网盘账号</a></li><li class="chapter-item expanded "><a href="faq/download.html"><strong aria-hidden="true">2.5.</strong> 下载失败，出现错误</a></li><li class="chapter-item expanded "><a href="faq/slow.html"><strong aria-hidden="true">2.6.</strong> 下载速度慢，账号被限速</a></li><li class="chapter-item expanded "><a href="faq/rapiduploadlink.html"><strong aria-hidden="true">2.7.</strong> 打开其他工具生成的秒传链接</a></li><li class="chapter-item expanded "><a href="faq/proxy.html"><strong aria-hidden="true">2.8.</strong> 怎么设置代理</a></li><li class="chapter-item expanded "><a href="faq/cookie.html"><strong aria-hidden="true">2.9.</strong> 使用cookie登录网盘账号</a></li><li class="chapter-item expanded "><a href="faq/script.html"><strong aria-hidden="true">2.10.</strong> 安装扩展脚本</a></li><li class="chapter-item expanded "><a href="faq/ua.html"><strong aria-hidden="true">2.11.</strong> 修改浏览器UA</a></li></ol></li><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">3.</strong> 关于</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="about/store.html"><strong aria-hidden="true">3.1.</strong> 商家合作</a></li><li class="chapter-item expanded "><a href="donate.html"><strong aria-hidden="true">3.2.</strong> 关于捐赠</a></li><li class="chapter-item expanded "><a href="about/commonweal.html"><strong aria-hidden="true">3.3.</strong> 关于公益服</a></li><li class="chapter-item expanded "><a href="about/disclaimer.html"><strong aria-hidden="true">3.4.</strong> 免责声明</a></li><li class="chapter-item expanded "><a href="about/about.html"><strong aria-hidden="true">3.5.</strong> 交流反馈</a></li></ol></li></ol>
+</div>
+<div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+</nav>
+<div id="page-wrapper" class="page-wrapper">
+<div class="page">
+<div id="menu-bar-hover-placeholder"></div>
+<div id="menu-bar" class="menu-bar sticky bordered">
+<div class="left-buttons">
+<button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+<i class="fa fa-bars"></i>
+</button>
+<button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+<i class="fa fa-paint-brush"></i>
+</button>
+<ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+<li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+<li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+<li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+<li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+<li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+</ul>
+<button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+<i class="fa fa-search"></i>
+</button>
+</div>
+<h1 class="menu-title">PanDownload</h1>
+<div class="right-buttons">
+<a href="print.html" title="Print this book" aria-label="Print this book">
+<i id="print-button" class="fa fa-print"></i>
+</a>
+</div>
+</div>
+<div id="search-wrapper" class="hidden">
+<form id="searchbar-outer" class="searchbar-outer">
+<input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+</form>
+<div id="searchresults-outer" class="searchresults-outer hidden">
+<div id="searchresults-header" class="searchresults-header"></div>
+<ul id="searchresults">
+</ul>
+</div>
+</div>
+
+<script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+<div id="content" class="content">
+<main>
+<h1 id="pandownload"><a class="header" href="#pandownload">PanDownload</a></h1>
+<hr />
+<h4 id="软件介绍"><a class="header" href="#软件介绍">软件介绍</a></h4>
+<p>本软件为 PanDownload 的众多修改版中的一个，制作本软件主要是因为原版 PanDownload 由于某个众所周知的原因，已经没办法正常使用了。</p>
+<p>鉴于找不到比 PanDownload 更优秀的百度网盘多账号管理软件，所以对 PanDownload 进行了一些基础功能上的修复。</p>
+<p>随着最近一些其他修改版的维护者退坑。故而现在放出这一自用版本发布给有需要的人使用。希望大家喜欢。</p>
+<h4 id="使用前必读"><a class="header" href="#使用前必读">使用前必读</a></h4>
+<p>最近用户增多，每天都会收到大量的辱骂，大多数辱骂来源于用户在使用中遇到一些问题，比如打不开软件，比如下载限速，比如限制下载任务数。</p>
+<p>有些是使用方法有问题，我也不知道是因为帮助文档写得太晦涩了，还是怎么样，反正很多人因为这些骂我。</p>
+<p>这里集中说明一下，辱骂我的人常常遇到的问题，其实文档里都有，我这次全部提到首页来再说一次。</p>
+<h5 id="有很多人看到请登录账号跑来骂我说垃圾软件还得登录根本不敢登录账号"><a class="header" href="#有很多人看到请登录账号跑来骂我说垃圾软件还得登录根本不敢登录账号">有很多人看到“请登录账号”跑来骂我说垃圾软件还得登录，根本不敢登录账号。</a></h5>
+<p>我不理解一个多网盘管理工具不登录怎么管理网盘，我猜测可能有些人觉得只是下载为什么要登录账号，但登录才能下载是百度的限制，骂我干嘛，更何况我准备了很多自己的svip账号供你们去下载，甚至不需要你们去登录，直接使用我准备的<strong>加速链接</strong>就可以了。就在帮助文档里为什么不愿意自己看看呢。</p>
+<h5 id="有人看到非百度网盘svip账号请将并行任务数设置为1就骂我垃圾软件还学百度限流"><a class="header" href="#有人看到非百度网盘svip账号请将并行任务数设置为1就骂我垃圾软件还学百度限流">有人看到&quot;非百度网盘SVIP账号请将并行任务数设置为1&quot;，就骂我垃圾软件还学百度限流</a></h5>
+<p>这个涉及到我文档里写的百度的限速机制，百度的限制机制对于不是svip的账号来说特别严格，很容易限速，所以我在默认脚本里加了一些保护机制，但是最近确实都对这个保护机制意见很大，所以今天我已经把保护账号的相关代码都删了，希望之后有人的账号限速了，不要回来怪软件吧。即使是这样，我还是推荐自备 <strong>SVIP账号</strong> 或者使用<strong>加速链接</strong>下载。</p>
+<h5 id="还有很多人因为速度慢骂我"><a class="header" href="#还有很多人因为速度慢骂我">还有很多人，因为速度慢骂我</a></h5>
+<p>这里面大部分是，自己的账号被限速了，然后骂我，这个我特别冤枉，因为限速是百度干的，限速机制在文档里也反复强调了，跟软件没关系呀。这软件只是个多网盘管理工具，决定下载速度的是百度，这个建议还是开通 SVIP 比较好，虽然百度对于 <strong>SVIP账号</strong> 虽然也会限速，但是阈值相对比较高，如果只是自己一个人或者和一两个朋友共用，通常是不会触发限速的。</p>
+<h4 id=""><a class="header" href="#"></a></h4>
+<h4 id="下载地址"><a class="header" href="#下载地址">下载地址</a></h4>
+<ul>
+<li><a href="https://harmonyos.oss-cn-beijing.aliyuncs.com/attach/202204/311227f168961b90f1d66373eab65dd71ebefc.zip">本地下载</a></li>
+<li><a href="https://wwt.lanzouf.com/i29Op0346t1e">网盘下载</a></li>
+</ul>
+<h4 id="更新日志"><a class="header" href="#更新日志">更新日志</a></h4>
+<p>v0.0.9</p>
+<p>更新时间：2022-04-13</p>
+<ol>
+<li>同步重构最新进度</li>
+<li>修复部分用户启动出现0x7错误</li>
+<li>尝试修复部分用户启动闪退</li>
+</ol>
+<p>v0.0.8</p>
+<p>更新时间：2022-04-10</p>
+<ol>
+<li>同步重构最新进度</li>
+<li>修复部分批量操作报错问题</li>
+<li>修复部分情况会出现0x7错误</li>
+</ol>
+<p>v0.0.7</p>
+<p>更新时间：2022-04-10</p>
+<ol>
+<li>同步目前的重构进度</li>
+<li>解决部分情况下闪退的问题</li>
+</ol>
+<p>v0.0.6</p>
+<p><strong>最近在重构 PanDownload 的修复补丁</strong>，这是一个重构中的半成品，为了解决打开分享链接的(-62)问题，提前推送了。</p>
+<p>更新时间：2022-04-08</p>
+<ol>
+<li>再次尝试修复(-62)问题</li>
+<li>尝试修复之前不能断点续传问题</li>
+</ol>
+<p>v0.0.5</p>
+<p>更新时间：2022-03-24</p>
+<ol>
+<li>再次尝试修复部分用户不能登录账号</li>
+<li>尝试修复部分用户已经是最新版本仍然提示更新最新版本问题</li>
+<li>尝试降低杀毒软件误杀率</li>
+<li>回退上个版本某激进更新，解决不兼容win7问题</li>
+</ol>
+<p>v0.0.4</p>
+<p>注意：在线更新失败的用户请使用手动更新获取最新的软件</p>
+<p>更新时间：2022-03-17</p>
+<ol>
+<li>修复部分用户不能登录账号</li>
+<li>修复部分用户不能在线更新</li>
+<li>加快部分用户下载链接加载速度</li>
+</ol>
+<p>v0.0.3 公测版</p>
+<p>更新时间：2022-03-14</p>
+<ol>
+<li>修复部分情况下的登录跳转失败</li>
+<li>加快启动速度</li>
+<li>进入公测阶段，不再需要注册内测账号即可使用</li>
+</ol>
+<p>v0.0.3</p>
+<p>更新时间：2021-08-23</p>
+<ol>
+<li>修复一键分享下载功能</li>
+<li>修复上个版本造成的部分用户无法正常显示目录BUG</li>
+<li>减少验证码弹出次数（测试中，不知道会不会产生副作用）</li>
+<li>换回之前的版本的编译方式减少杀毒软件误报</li>
+</ol>
+<p>v0.0.2</p>
+<p>更新时间：2021-08-21</p>
+<ol>
+<li>修复今天开始无法报错分享文件的bug</li>
+<li>增加本地加密lua的支持（测试中）</li>
+<li>修复自动更新</li>
+</ol>
+<p>v0.0.1 Fix7</p>
+<p>更新时间：2021-07-20</p>
+<ol>
+<li>尝试修复视频播放功能[目前仅支持自己网盘中的视频播放，且非SVIP账号视频播放过程中容易出现奇怪的问题]</li>
+</ol>
+<p>v0.0.1 Fix6</p>
+<p>更新时间：2021-07-19</p>
+<ol>
+<li>修复英文昵称的百度网盘账号无法正常登录BUG</li>
+</ol>
+<p>v0.0.1 Fix5</p>
+<p>更新时间：2021-07-11</p>
+<ol>
+<li>加快软件启动速度</li>
+<li>减少部分网络下无法启动程序的几率</li>
+<li>减少部分网络下注册登录会报Json错误的几率</li>
+</ol>
+<p>v0.0.1 Fix4</p>
+<p>更新时间：2021-07-10</p>
+<ol>
+<li>修复原版 PanDownload 登录百度账号后无法自动跳转BUG</li>
+</ol>
+<p>v0.0.1 Fix3</p>
+<p>更新时间：2021-07-08</p>
+<p>更新内容：</p>
+<ol>
+<li>修复原版 PanDownload 不能登录百度账号的BUG</li>
+<li>修复原版 PanDownload 不能打开打开分享链接的BUG</li>
+<li>修复原版 PanDownload 不能生成不带提取码的分享链接的BUG</li>
+<li>修复原版 PanDownload 下载无法下载不带提取码分享链接BUG</li>
+<li>修复原版 PanDownload 某些远古分享链接无法正常打开的BUG</li>
+<li>修复打开文件校验容易出错的BUG</li>
+<li>修改 cookie 登录为仅需 BDUSS 登录即可使用全部功能</li>
+<li>重构默认脚本集成小文件加速通道</li>
+<li>新增<a href="./faq/rapiduploadlink.html">秒传转换脚本</a>，让 PanDownload 可以变相支持其他格式的秒传链接</li>
+</ol>
+<h4 id="交流群"><a class="header" href="#交流群">交流群</a></h4>
+<p>尽量使用Telegram群交流</p>
+<p>TG频道链接：https://t.me/pandownloadfixs</p>
+<p>TG群聊链接：<a href="https://t.me/pandownloadfix">https://t.me/pandownloadfix</a></p>
+<p>无法访问国际网络的用户可以到QQ频道交流</p>
+<p>QQ频道：手机QQ直接 <a href="https://qun.qq.com/qqweb/qunpro/share?_wv=3&amp;_wwv=128&amp;inviteCode=28brhc&amp;from=181074&amp;biz=ka">点此加入</a></p>
+<p><strong>PS.似乎只有手机QQ才能加入，加入后PC端也会有显示，如果人满了请过段时间再试，我们会尽可能扩容</strong></p>
+</main>
+<nav class="nav-wrapper" aria-label="Page navigation">
+
+<a rel="next" href="document.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+<i class="fa fa-angle-right"></i>
+</a>
+<div style="clear: both"></div>
+</nav>
+</div>
+</div>
+<nav class="nav-wide-wrapper" aria-label="Page navigation">
+<a rel="next" href="document.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+<i class="fa fa-angle-right"></i>
+</a>
+</nav>
+</div>
+<script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+<script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+<script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+<script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+<script type="text/javascript">(function(){window['__CF$cv$params']={r:'70e98f53fcaa7c4d',m:'EAJpqtH2dt8Ds_YitjnSv4S1ecQDS8u3WLKS7WXUKjo-1653096763-0-AcGjim5nawfcLD9pId8jLPg4wkldnyEU0FLkId+zAZERBDoksaM/V9qtvrRTY0kpy2Zrn9PxbJ8m2w1atnMzvqalK0r4GB6nuC6BAF847UxZNYRbu1g/j7r8RwbDdjeW6w==',s:[0xd1cc760086,0x1e332cb0e4],}})();</script></body>
 </html>
