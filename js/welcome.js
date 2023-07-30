@@ -26,7 +26,7 @@ function getDistance(e1, n1, e2, n2) {
 
 function showWelcome() {
 
-    let dist = getDistance(122.29571063731001, 29.934383743944917, ipLocation.data.lng, ipLocation.data.lat);
+    let dist = getDistance(122.268254, 29.867200, ipLocation.data.lng, ipLocation.data.lat);
     let pos = ipLocation.data.country;
     let ip = ipLocation.ip;
     let posdesc;
@@ -265,7 +265,7 @@ function getDistance(e1, n1, e2, n2) {
 
 // 根据获取的IP地址显示欢迎信息
 function showWelcome() {
-    let dist = getDistance(122.29571063731001, 29.934383743944917, ipLocation.data.lng, ipLocation.data.lat);
+    let dist = getDistance(122.268254, 29.867200, ipLocation.data.lng, ipLocation.data.lat);
     let pos = ipLocation.data.country;
     let ip = ipLocation.ip;
     let posdesc;
