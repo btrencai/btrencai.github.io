@@ -4,11 +4,11 @@ var anzhiyu_musicFirst = false;
 var anzhiyu_keyboard = null;
 // 音乐播放状态
 var anzhiyu_musicPlaying = false;
-var $web_container = document.getElementById("web_container");
-var $web_box = document.getElementById("web_box");
 var $bodyWrap = document.getElementById("body-wrap");
 var $main = document.querySelector("main");
 var dragStartX;
+
+var popupWindowTimer = null;
 
 var adjectives = [
   "美丽的",
@@ -143,148 +143,57 @@ var vegetablesAndFruits = [
   "火龙果",
 ];
 document.addEventListener("DOMContentLoaded", function () {
-  function onDragStart(event) {
-    // event.preventDefault();
-    dragStartX = getEventX(event);
-    $web_box.style.transition = "all .3s";
-    addMoveEndListeners(onDragMove, onDragEnd);
-  }
-
-  function onDragMove(event) {
-    const deltaX = getEventX(event) - dragStartX;
-    if (deltaX < 0) {
-      const screenWidth = window.innerWidth;
-      const translateX = Math.min(-300, ((-1 * deltaX) / screenWidth) * 300);
-      const scale = Math.min(1, 0.86 + (deltaX / screenWidth) * (1 - 0.86));
-      $web_box.style.transform = `translate3d(-${translateX}px, 0px, 0px) scale3d(${scale}, ${scale}, 1)`;
-    }
-  }
-
-  function onDragEnd(event) {
-    const screenWidth = window.innerWidth;
-    if (getEventX(event) <= screenWidth / 1.5) {
-      completeTransition();
-    } else {
-      resetTransition();
-    }
-    removeMoveEndListeners(onDragMove, onDragEnd);
-  }
-
-  function completeTransition() {
-    $web_box.style.transition = "all 0.3s ease-out";
-    $web_box.style.transform = "none";
-    sidebarFn.close();
-    removeMoveEndListeners(onDragMove, onDragEnd);
-  }
-
-  function resetTransition() {
-    $web_box.style.transition = "";
-    $web_box.style.transform = "";
-  }
-
-  function getEventX(event) {
-    return event.type.startsWith("touch") ? event.changedTouches[0].clientX : event.clientX;
-  }
-
-  function addMoveEndListeners(moveHandler, endHandler) {
-    document.addEventListener("mousemove", moveHandler);
-    document.addEventListener("mouseup", endHandler);
-    document.addEventListener("touchmove", moveHandler, { passive: false });
-    document.addEventListener("touchend", endHandler);
-  }
-
-  function removeMoveEndListeners(moveHandler, endHandler) {
-    document.removeEventListener("mousemove", moveHandler);
-    document.removeEventListener("mouseup", endHandler);
-    document.removeEventListener("touchmove", moveHandler);
-    document.removeEventListener("touchend", endHandler);
-  }
-
-  let blogNameWidth, menusWidth, searchWidth;
+  let headerContentWidth, $nav
   let mobileSidebarOpen = false;
-  const $sidebarMenus = document.getElementById("sidebar-menus");
-  const $rightside = document.getElementById("rightside");
-  let $nav = document.getElementById("nav");
   const adjustMenu = init => {
+    const getAllWidth = ele => {
+      return Array.from(ele).reduce((width, i) => width + i.offsetWidth, 0)
+    }
+
     if (init) {
-      blogNameWidth = document.getElementById("site-name").offsetWidth;
-      const $menusEle = document.querySelectorAll("#menus .menus_item");
-      menusWidth = 0;
-      $menusEle.length &&
-        $menusEle.forEach(i => {
-          menusWidth += i.offsetWidth;
-        });
-      const $searchEle = document.querySelector("#search-button");
-      searchWidth = $searchEle ? $searchEle.offsetWidth : 0;
-      $nav = document.getElementById("nav");
+      const blogInfoWidth = getAllWidth(document.querySelector('#blog_name > a').children)
+      const menusWidth = getAllWidth(document.getElementById('menus').children)
+      headerContentWidth = blogInfoWidth + menusWidth
+      $nav = document.getElementById('nav')
     }
 
-    let hideMenuIndex = "";
-    if (window.innerWidth <= 768) hideMenuIndex = true;
-    else hideMenuIndex = blogNameWidth + menusWidth + searchWidth > $nav.offsetWidth - 120;
-
-    if (hideMenuIndex) {
-      $nav.classList.add("hide-menu");
-    } else {
-      $nav.classList.remove("hide-menu");
-    }
-  };
+    const hideMenuIndex = window.innerWidth <= 768 || headerContentWidth > $nav.offsetWidth - 120
+    $nav.classList.toggle('hide-menu', hideMenuIndex)
+  }
 
   // 初始化header
   const initAdjust = () => {
-    adjustMenu(true);
-    $nav.classList.add("show");
-  };
+    adjustMenu(true)
+    $nav.classList.add('show')
+  }
 
   // sidebar menus
   const sidebarFn = {
     open: () => {
-      anzhiyu.sidebarPaddingR();
-      anzhiyu.changeThemeMetaColor("#607d8b");
-      anzhiyu.animateIn(document.getElementById("menu-mask"), "to_show 0.5s");
-      $sidebarMenus.classList.add("open");
-      $web_box.classList.add("open");
-      $rightside.classList.add("hide");
-      $nav.style.borderTopLeftRadius = "12px";
-      mobileSidebarOpen = true;
-      document.body.style.overflow = "hidden";
-      $web_box.addEventListener("mousedown", onDragStart);
-      $web_box.addEventListener("touchstart", onDragStart, { passive: false });
-      if (window.location.pathname.startsWith("/music/")) {
-        $web_container.style.background = "rgb(255 255 255 / 20%)";
-      } else {
-        $web_container.style.background = "var(--global-bg)";
-      }
+      anzhiyu.sidebarPaddingR()
+      anzhiyu.animateIn(document.getElementById('menu-mask'), 'to_show 0.5s')
+      document.getElementById('sidebar-menus').classList.add('open')
+      mobileSidebarOpen = true
     },
     close: () => {
-      const $body = document.body;
-      anzhiyu.initThemeColor();
-      $body.style.paddingRight = "";
-      anzhiyu.animateOut(document.getElementById("menu-mask"), "to_hide 0.5s");
-      $sidebarMenus.classList.remove("open");
-      $web_box.classList.remove("open");
-      $rightside.classList.remove("hide");
-      $nav.style.borderTopLeftRadius = "0px";
-      mobileSidebarOpen = false;
-      document.body.style.overflow = "auto";
-      anzhiyu.addNavBackgroundInit();
-    },
-  };
+      const $body = document.body
+      $body.style.paddingRight = ''
+      anzhiyu.animateOut(document.getElementById('menu-mask'), 'to_hide 0.5s')
+      document.getElementById('sidebar-menus').classList.remove('open')
+      mobileSidebarOpen = false
+    }
+  }
 
   /**
    * 首頁top_img底下的箭頭
    */
   const scrollDownInIndex = () => {
-    const $bbTimeList = document.getElementById("bbTimeList");
+    const handleScrollToDest = () => {
+      anzhiyu.scrollToDest(document.getElementById("content-inner").offsetTop, 300);
+    };
+
     const $scrollDownEle = document.getElementById("scroll-down");
-    $scrollDownEle &&
-      $scrollDownEle.addEventListener("click", function () {
-        if ($bbTimeList) {
-          anzhiyu.scrollToDest($bbTimeList.offsetTop, 300);
-        } else {
-          anzhiyu.scrollToDest(document.getElementById("content-inner").offsetTop, 300);
-        }
-      });
+    $scrollDownEle && anzhiyu.addEventListenerPjax($scrollDownEle, "click", handleScrollToDest);
   };
 
   /**
@@ -383,14 +292,14 @@ document.addEventListener("DOMContentLoaded", function () {
       this.classList.toggle("expand-done");
     };
 
-    function createEle(lang, item, service) {
+    const createEle = (lang, item, service) => {
       const fragment = document.createDocumentFragment();
 
       if (isShowTool) {
         const hlTools = document.createElement("div");
         hlTools.className = `highlight-tools ${highlightShrinkClass}`;
         hlTools.innerHTML = highlightShrinkEle + lang + highlightCopyEle;
-        hlTools.addEventListener("click", highlightToolsFn);
+        anzhiyu.addEventListenerPjax(hlTools, "click", highlightToolsFn);
         fragment.appendChild(hlTools);
       }
 
@@ -398,7 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const ele = document.createElement("div");
         ele.className = "code-expand-btn";
         ele.innerHTML = '<i class="anzhiyufont anzhiyu-icon-angle-double-down"></i>';
-        ele.addEventListener("click", expandCode);
+        anzhiyu.addEventListenerPjax(ele, "click", expandCode);
         fragment.appendChild(ele);
       }
 
@@ -407,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         item.parentNode.insertBefore(fragment, item);
       }
-    }
+    };
 
     if (isHighlightLang) {
       if (isPrismjs) {
@@ -599,6 +508,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let initTop = 0;
     let isChatShow = true;
     const $header = document.getElementById("page-header");
+    const $popupWindow = document.getElementById("popup-window");
     const isChatBtnHide = typeof chatBtnHide === "function";
     const isChatBtnShow = typeof chatBtnShow === "function";
 
@@ -663,7 +573,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    const scroolTask = anzhiyu.throttle(() => {
+    const scrollTask = anzhiyu.throttle(() => {
       const currentTop = window.scrollY || document.documentElement.scrollTop;
       const isDown = scrollDirection(currentTop);
 
@@ -672,7 +582,29 @@ document.addEventListener("DOMContentLoaded", function () {
         // ignore small scrolls
         return;
       }
+      if (
+        $popupWindow &&
+        $popupWindow.classList.contains("show-popup-window") &&
+        currentTop > 60 &&
+        delta > 20 &&
+        lastScrollTop != 0
+      ) {
+        // 滚动后延迟1s关闭弹窗
+        anzhiyu.throttle(() => {
+          if (popupWindowTimer) clearTimeout(popupWindowTimer);
+          popupWindowTimer = setTimeout(() => {
+            if (!$popupWindow.classList.contains("popup-hide")) {
+              $popupWindow.classList.add("popup-hide");
+            }
+            setTimeout(() => {
+              $popupWindow.classList.remove("popup-hide");
+              $popupWindow.classList.remove("show-popup-window");
+            }, 1000);
+          }, 1000);
+        }, 1000)();
+      }
       lastScrollTop = currentTop;
+
       if (currentTop > 26) {
         if (isDown) {
           if ($header.classList.contains("nav-visible")) $header.classList.remove("nav-visible");
@@ -734,8 +666,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .observe(footerDom);
     }
 
-    window.scrollCollect = scroolTask;
-    window.addEventListener("scroll", scrollCollect);
+    scrollTask()
+    anzhiyu.addEventListenerPjax(window, "scroll", scrollTask, { passive: true });
   };
 
   /**
@@ -846,12 +778,12 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // main of scroll
-    window.tocScrollFn = anzhiyu.throttle(() => {
+    const tocScrollFn = anzhiyu.throttle(() => {
       const currentTop = window.scrollY || document.documentElement.scrollTop;
       findHeadPosition(currentTop);
-    }, 96);
+    }, 100);
 
-    window.addEventListener("scroll", tocScrollFn);
+    anzhiyu.addEventListenerPjax(window, "scroll", tocScrollFn, { passive: true });
   };
 
   /**
@@ -955,35 +887,52 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   /**
+   * 手机端目录点击
+   */
+  const openMobileMenu = () => {
+    const handleClick = () => {
+      sidebarFn.open();
+    };
+    anzhiyu.addEventListenerPjax(document.getElementById("toggle-menu"), "click", handleClick);
+  };
+
+  /**
    * 複製時加上版權信息
    */
   const addCopyright = () => {
     const copyright = GLOBAL_CONFIG.copyright;
+    const copyrightEbable = copyright.copyrightEbable;
+
     document.body.oncopy = e => {
-      e.preventDefault();
-      let textFont;
-      const copyFont = window.getSelection(0).toString();
-      if (copyFont.length > copyright.limitCount) {
-        textFont =
-          copyFont +
-          "\n" +
-          "\n" +
-          "\n" +
-          copyright.languages.author +
-          "\n" +
-          copyright.languages.link +
-          window.location.href +
-          "\n" +
-          copyright.languages.source +
-          "\n" +
-          copyright.languages.info;
-      } else {
-        textFont = copyFont;
+      if (copyright.copy) {
+        anzhiyu.snackbarShow(copyright.languages.copySuccess);
       }
-      if (e.clipboardData) {
-        return e.clipboardData.setData("text", textFont);
-      } else {
-        return window.clipboardData.setData("text", textFont);
+      if (copyrightEbable) {
+        e.preventDefault();
+        let textFont;
+        const copyFont = window.getSelection(0).toString();
+        if (copyFont.length > copyright.limitCount) {
+          textFont =
+            copyFont +
+            "\n" +
+            "\n" +
+            "\n" +
+            copyright.languages.author +
+            "\n" +
+            copyright.languages.link +
+            window.location.href +
+            "\n" +
+            copyright.languages.source +
+            "\n" +
+            copyright.languages.info;
+        } else {
+          textFont = copyFont;
+        }
+        if (e.clipboardData) {
+          return e.clipboardData.setData("text", textFont);
+        } else {
+          return window.clipboardData.setData("text", textFont);
+        }
       }
     };
   };
@@ -1039,79 +988,81 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  const tabsFn = {
-    clickFnOfTabs: function () {
-      document.querySelectorAll("#article-container .tab > button").forEach(function (item) {
-        item.addEventListener("click", function (e) {
-          const $this = this;
-          const $tabItem = $this.parentNode;
+  const tabsFn = () => {
+    const navTabsElement = document.querySelectorAll("#article-container .tabs");
+    if (!navTabsElement.length) return;
 
-          if (!$tabItem.classList.contains("active")) {
-            const $tabContent = $tabItem.parentNode.nextElementSibling;
-            const $siblings = anzhiyu.siblings($tabItem, ".active")[0];
-            $siblings && $siblings.classList.remove("active");
-            $tabItem.classList.add("active");
-            const tabId = $this.getAttribute("data-href").replace("#", "");
-            const childList = [...$tabContent.children];
-            childList.forEach(item => {
-              if (item.id === tabId) item.classList.add("active");
-              else item.classList.remove("active");
-            });
-            const $isTabJustifiedGallery = $tabContent.querySelectorAll(`#${tabId} .fj-gallery`);
-            if ($isTabJustifiedGallery.length > 0) {
-              anzhiyu.initJustifiedGallery($isTabJustifiedGallery);
-            }
-          }
-        });
-      });
-    },
-    backToTop: () => {
-      document.querySelectorAll("#article-container .tabs .tab-to-top").forEach(function (item) {
-        item.addEventListener("click", function () {
-          anzhiyu.scrollToDest(anzhiyu.getEleTop(anzhiyu.getParents(this, ".tabs")) - 60, 300);
-        });
-      });
-    },
-  };
-
-  const toggleCardCategory = function () {
-    const $cardCategory = document.querySelectorAll("#aside-cat-list .card-category-list-item.parent i");
-    if ($cardCategory.length) {
-      $cardCategory.forEach(function (item) {
-        item.addEventListener("click", function (e) {
-          e.preventDefault();
-          const $this = this;
-          $this.classList.toggle("expand");
-          const $parentEle = $this.parentNode.nextElementSibling;
-          if (anzhiyu.isHidden($parentEle)) {
-            $parentEle.style.display = "block";
-          } else {
-            $parentEle.style.display = "none";
-          }
-        });
-      });
-    }
-  };
-
-  const switchComments = function () {
-    let switchDone = false;
-    const $switchBtn = document.querySelector("#comment-switch > .switch-btn");
-    $switchBtn &&
-      $switchBtn.addEventListener("click", function () {
-        this.classList.toggle("move");
-        document.querySelectorAll("#post-comment > .comment-wrap > div").forEach(function (item) {
-          if (anzhiyu.isHidden(item)) {
-            item.style.cssText = "display: block;animation: tabshow .5s";
-          } else {
-            item.style.cssText = "display: none;animation: ''";
-          }
-        });
-
-        if (!switchDone && typeof loadOtherComment === "function") {
-          switchDone = true;
-          loadOtherComment();
+    const removeAndAddActiveClass = (elements, detect) => {
+      Array.from(elements).forEach(element => {
+        element.classList.remove("active");
+        if (element === detect || element.id === detect) {
+          element.classList.add("active");
         }
       });
+    };
+
+    const addTabNavEventListener = (item, isJustifiedGallery) => {
+      const navClickHandler = function (e) {
+        const target = e.target.closest("button");
+        if (target.classList.contains("active")) return;
+        removeAndAddActiveClass(this.children, target);
+        this.classList.remove("no-default");
+        const tabId = target.getAttribute("data-href");
+        const tabContent = this.nextElementSibling;
+        removeAndAddActiveClass(tabContent.children, tabId);
+        if (isJustifiedGallery) {
+          const $isTabJustifiedGallery = tabContent.querySelectorAll(`#${tabId} .fj-gallery`);
+          if ($isTabJustifiedGallery.length > 0) {
+            anzhiyu.initJustifiedGallery($isTabJustifiedGallery);
+          }
+        }
+      };
+      anzhiyu.addEventListenerPjax(item.firstElementChild, "click", navClickHandler);
+    };
+
+    const addTabToTopEventListener = item => {
+      const btnClickHandler = e => {
+        const target = e.target.closest("button");
+        if (!target) return;
+        anzhiyu.scrollToDest(anzhiyu.getEleTop(item), 300);
+      };
+      anzhiyu.addEventListenerPjax(item.lastElementChild, "click", btnClickHandler);
+    };
+
+    navTabsElement.forEach(item => {
+      const isJustifiedGallery = !!item.querySelectorAll(".gallery-container");
+      addTabNavEventListener(item, isJustifiedGallery);
+      addTabToTopEventListener(item);
+    });
+  };
+
+  const toggleCardCategory = () => {
+    const cardCategory = document.querySelector("#aside-cat-list.expandBtn");
+    if (!cardCategory) return;
+
+    const handleToggleBtn = e => {
+      const target = e.target;
+      if (target.nodeName === "I") {
+        e.preventDefault();
+        target.parentNode.classList.toggle("expand");
+      }
+    };
+    anzhiyu.addEventListenerPjax(cardCategory, "click", handleToggleBtn, true);
+  };
+
+  const switchComments = () => {
+    const switchBtn = document.getElementById("switch-btn");
+    if (!switchBtn) return;
+    let switchDone = false;
+    const commentContainer = document.getElementById("post-comment");
+    const handleSwitchBtn = () => {
+      commentContainer.classList.toggle("move");
+      if (!switchDone) {
+        switchDone = true;
+        loadOtherComment();
+      }
+    };
+    anzhiyu.addEventListenerPjax(switchBtn, "click", handleSwitchBtn);
   };
 
   const addPostOutdateNotice = function () {
@@ -1138,16 +1089,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   };
 
-  const relativeDate = function (selector, simple = false) {
+  const relativeDate = function (selector) {
     selector.forEach(item => {
-      const $this = item;
-      const timeVal = $this.getAttribute("datetime");
-      if (simple) {
-        $this.innerText = anzhiyu.diffDate(timeVal, false, simple);
-      } else {
-        $this.innerText = anzhiyu.diffDate(timeVal, true);
-      }
-      $this.style.display = "inline";
+      const timeVal = item.getAttribute("datetime");
+      item.textContent = anzhiyu.diffDate(timeVal, true);
+      item.style.display = "inline";
     });
   };
 
@@ -1258,97 +1204,118 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       document.documentElement.style.setProperty(
         "--anzhiyu-theme-op-deep",
-        getComputedStyle(document.documentElement).getPropertyValue("--anzhiyu-main") +"dd"
+        getComputedStyle(document.documentElement).getPropertyValue("--anzhiyu-main") + "dd"
       );
-    
 
       return;
     }
 
     // 文章内
     if (GLOBAL_CONFIG.mainTone) {
-      const fallbackValue = "var(--anzhiyu-theme)";
-      let fetchPath = "";
-      if (GLOBAL_CONFIG.mainTone.mode == "cdn" || GLOBAL_CONFIG.mainTone.mode == "both") {
-        fetchPath = path + "?imageAve";
-      } else if (GLOBAL_CONFIG.mainTone.mode == "api") {
-        fetchPath = GLOBAL_CONFIG.mainTone.api + path;
-      }
-      // cdn/api模式请求
-      try {
-        const response = await fetch(fetchPath);
-        if (response.ok && response.headers.get("content-type")?.includes("application/json")) {
-          const obj = await response.json();
-          let value =
-            GLOBAL_CONFIG.mainTone.mode == "cdn" || GLOBAL_CONFIG.mainTone.mode == "both"
-              ? "#" + obj.RGB.slice(2)
-              : obj.RGB;
-          if (getContrastYIQ(value) === "light") {
-            value = LightenDarkenColor(colorHex(value), -40);
-          }
+      if (GLOBAL_CONFIG_SITE.postMainColor) {
+        let value = GLOBAL_CONFIG_SITE.postMainColor;
+        if (getContrastYIQ(value) === "light") {
+          value = LightenDarkenColor(colorHex(value), -40);
+        }
 
-          root.style.setProperty("--anzhiyu-bar-background", value);
-          anzhiyu.initThemeColor();
+        root.style.setProperty("--anzhiyu-bar-background", value);
+        anzhiyu.initThemeColor();
 
-          if (GLOBAL_CONFIG.mainTone.cover_change) {
-            document.documentElement.style.setProperty("--anzhiyu-main", value);
-            document.documentElement.style.setProperty(
-              "--anzhiyu-theme-op",
-              getComputedStyle(document.documentElement).getPropertyValue("--anzhiyu-main") + "23"
-            );
-            document.documentElement.style.setProperty(
-              "--anzhiyu-theme-op-deep",
-              getComputedStyle(document.documentElement).getPropertyValue("--anzhiyu-main") +"dd"
-            );
-          }
-        } else {
-          if (GLOBAL_CONFIG.mainTone.mode == "both") {
-            // both继续请求
-            try {
-              const response = await fetch(GLOBAL_CONFIG.mainTone.api + path);
-              if (response.ok && response.headers.get("content-type")?.includes("application/json")) {
-                const obj = await response.json();
-                let value = obj.RGB;
+        if (GLOBAL_CONFIG.mainTone.cover_change) {
+          document.documentElement.style.setProperty("--anzhiyu-main", value);
+          document.documentElement.style.setProperty(
+            "--anzhiyu-theme-op",
+            getComputedStyle(document.documentElement).getPropertyValue("--anzhiyu-main") + "23"
+          );
+          document.documentElement.style.setProperty(
+            "--anzhiyu-theme-op-deep",
+            getComputedStyle(document.documentElement).getPropertyValue("--anzhiyu-main") + "dd"
+          );
+        }
+      } else {
+        const fallbackValue = "var(--anzhiyu-theme)";
+        let fetchPath = "";
+        if (GLOBAL_CONFIG.mainTone.mode == "cdn" || GLOBAL_CONFIG.mainTone.mode == "both") {
+          fetchPath = path + "?imageAve";
+        } else if (GLOBAL_CONFIG.mainTone.mode == "api") {
+          fetchPath = GLOBAL_CONFIG.mainTone.api + path;
+        }
+        // cdn/api模式请求
+        try {
+          const response = await fetch(fetchPath);
+          if (response.ok && response.headers.get("content-type")?.includes("application/json")) {
+            const obj = await response.json();
+            let value =
+              GLOBAL_CONFIG.mainTone.mode == "cdn" || GLOBAL_CONFIG.mainTone.mode == "both"
+                ? "#" + obj.RGB.slice(2)
+                : obj.RGB;
+            if (getContrastYIQ(value) === "light") {
+              value = LightenDarkenColor(colorHex(value), -40);
+            }
 
-                if (getContrastYIQ(value) === "light") {
-                  value = LightenDarkenColor(colorHex(value), -40);
+            root.style.setProperty("--anzhiyu-bar-background", value);
+            anzhiyu.initThemeColor();
+
+            if (GLOBAL_CONFIG.mainTone.cover_change) {
+              document.documentElement.style.setProperty("--anzhiyu-main", value);
+              document.documentElement.style.setProperty(
+                "--anzhiyu-theme-op",
+                getComputedStyle(document.documentElement).getPropertyValue("--anzhiyu-main") + "23"
+              );
+              document.documentElement.style.setProperty(
+                "--anzhiyu-theme-op-deep",
+                getComputedStyle(document.documentElement).getPropertyValue("--anzhiyu-main") + "dd"
+              );
+            }
+          } else {
+            if (GLOBAL_CONFIG.mainTone.mode == "both") {
+              // both继续请求
+              try {
+                const response = await fetch(GLOBAL_CONFIG.mainTone.api + path);
+                if (response.ok && response.headers.get("content-type")?.includes("application/json")) {
+                  const obj = await response.json();
+                  let value = obj.RGB;
+
+                  if (getContrastYIQ(value) === "light") {
+                    value = LightenDarkenColor(colorHex(value), -40);
+                  }
+
+                  root.style.setProperty("--anzhiyu-bar-background", value);
+                  anzhiyu.initThemeColor();
+
+                  if (GLOBAL_CONFIG.mainTone.cover_change) {
+                    document.documentElement.style.setProperty("--anzhiyu-main", value);
+                    document.documentElement.style.setProperty(
+                      "--anzhiyu-theme-op",
+                      getComputedStyle(document.documentElement).getPropertyValue("--anzhiyu-main") + "23"
+                    );
+                    document.documentElement.style.setProperty(
+                      "--anzhiyu-theme-op-deep",
+                      getComputedStyle(document.documentElement).getPropertyValue("--anzhiyu-main") + "dd"
+                    );
+                  }
+                } else {
+                  root.style.setProperty("--anzhiyu-bar-background", fallbackValue);
+                  anzhiyu.initThemeColor();
+                  document.documentElement.style.setProperty("--anzhiyu-main", fallbackValue);
                 }
-
-                root.style.setProperty("--anzhiyu-bar-background", value);
-                anzhiyu.initThemeColor();
-
-                if (GLOBAL_CONFIG.mainTone.cover_change) {
-                  document.documentElement.style.setProperty("--anzhiyu-main", value);
-                  document.documentElement.style.setProperty(
-                    "--anzhiyu-theme-op",
-                    getComputedStyle(document.documentElement).getPropertyValue("--anzhiyu-main") + "23"
-                  );
-                  document.documentElement.style.setProperty(
-                    "--anzhiyu-theme-op-deep",
-                    getComputedStyle(document.documentElement).getPropertyValue("--anzhiyu-main") +"dd"
-                  );
-                }
-              } else {
+              } catch {
                 root.style.setProperty("--anzhiyu-bar-background", fallbackValue);
                 anzhiyu.initThemeColor();
                 document.documentElement.style.setProperty("--anzhiyu-main", fallbackValue);
               }
-            } catch {
+            } else {
               root.style.setProperty("--anzhiyu-bar-background", fallbackValue);
               anzhiyu.initThemeColor();
               document.documentElement.style.setProperty("--anzhiyu-main", fallbackValue);
             }
-          } else {
-            root.style.setProperty("--anzhiyu-bar-background", fallbackValue);
-            anzhiyu.initThemeColor();
-            document.documentElement.style.setProperty("--anzhiyu-main", fallbackValue);
           }
+        } catch (err) {
+          console.error("Error fetching data:", err);
+          root.style.setProperty("--anzhiyu-bar-background", fallbackValue);
+          anzhiyu.initThemeColor();
+          document.documentElement.style.setProperty("--anzhiyu-main", fallbackValue);
         }
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        root.style.setProperty("--anzhiyu-bar-background", fallbackValue);
-        anzhiyu.initThemeColor();
-        document.documentElement.style.setProperty("--anzhiyu-main", fallbackValue);
       }
     }
   };
@@ -1485,14 +1452,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const unRefreshFn = function () {
     window.addEventListener("resize", () => {
       adjustMenu(false);
-      anzhiyu.isHidden(document.getElementById("toggle-menu")) && mobileSidebarOpen && sidebarFn.close();
+      mobileSidebarOpen && anzhiyu.isHidden(document.getElementById("toggle-menu")) && sidebarFn.close();
     });
-
-    anzhiyu.darkModeStatus();
 
     document.getElementById("menu-mask").addEventListener("click", e => {
       sidebarFn.close();
     });
+
+    anzhiyu.darkModeStatus();
+    clickFnOfSubMenu();
     GLOBAL_CONFIG.islazyload && lazyloadImg();
     GLOBAL_CONFIG.copyright !== undefined && addCopyright();
     GLOBAL_CONFIG.navMusic && listenNavMusicPause();
@@ -1501,7 +1469,12 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("consoleKeyboard").classList.add("on");
       anzhiyu_keyboard = true;
     }
-    clickFnOfSubMenu();
+    if (GLOBAL_CONFIG.autoDarkmode) {
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+        if (saveToLocal.get("theme") !== undefined) return;
+        e.matches ? handleThemeChange("dark") : handleThemeChange("light");
+      });
+    }
   };
 
   window.refreshFn = function () {
@@ -1536,8 +1509,7 @@ document.addEventListener("DOMContentLoaded", function () {
     runLightbox();
     addTableWrap();
     clickFnOfTagHide();
-    tabsFn.clickFnOfTabs();
-    tabsFn.backToTop();
+    tabsFn();
     switchComments();
     document.getElementById("toggle-menu").addEventListener("click", () => {
       sidebarFn.open();
@@ -1549,6 +1521,7 @@ document.addEventListener("DOMContentLoaded", function () {
     mouseleaveHomeCard();
     coverColor();
     listenToPageInputPress();
+    openMobileMenu();
   };
 
   refreshFn();
