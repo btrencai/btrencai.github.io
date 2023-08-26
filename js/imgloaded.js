@@ -67,10 +67,10 @@ class ProgressiveLoad {
   };
   
   const config = {
-    smallSrc: '/img/small.jpg', // 小图链接 尽可能配置小于100k的图片
-    largeSrc: '/img/backtop.jpg', // 大图链接 最终显示的图片
-    mobileSmallSrc: '/img/small.jpg', // 手机端小图链接 尽可能配置小于100k的图片
-    mobileLargeSrc: '/img/backtop.jpg', // 手机端大图链接 最终显示的图片
+    smallSrc: 'https://djy.btrencai.top/202308262047715.jpg', // 小图链接 尽可能配置小于100k的图片
+    largeSrc: 'https://djy.btrencai.top/202308262047117.webp', // 大图链接 最终显示的图片
+    mobileSmallSrc: 'https://djy.btrencai.top/202308262047715.jpg', // 手机端小图链接 尽可能配置小于100k的图片
+    mobileLargeSrc: 'https://djy.btrencai.top/202308262047117.webp', // 手机端大图链接 最终显示的图片
     enableRoutes: ['/'],
     };
 
