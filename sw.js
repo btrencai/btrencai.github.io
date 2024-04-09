@@ -2,7 +2,7 @@
 
 (() => {
     /** 缓存库名称 */
-    const CACHE_NAME = 'AnZhiYuBlogCache'
+    const CACHE_NAME = 'AnZhiYuThemeCache'
     /** 控制信息存储地址（必须以`/`结尾） */
     const CTRL_PATH = 'https://id.v3/'
 
@@ -49,20 +49,10 @@
     self.addEventListener('activate', event => event.waitUntil(clients.claim()))
 
     // noinspection JSFileReferences
-    let getSpareUrls = srcUrl => {
-    if (srcUrl.startsWith('https://npm.elemecdn.com')) {
-        return {
-            timeout: 3000,
-            list: [
-                srcUrl,
-                `https://cdn.cbd.int/${new URL(srcUrl).pathname}`
-            ]
-        }
-    }
-}
-let cacheRules = {
+    let cacheRules = {
 simple: {
 clean: true,
+search: false,
 match: url => {
       const allowedHost = ejectDomain;
       const allowedPaths = ["/404.html", "/css/index.css"];
@@ -70,7 +60,7 @@ match: url => {
     }}
 ,
 cdn: {
-clean: false,
+clean: true,
 match: url =>
       [
         "cdn.cbd.int",
@@ -83,6 +73,14 @@ match: url =>
       ].includes(url.host) && url.pathname.match(/\.(js|css|woff2|woff|ttf|cur)$/)}
 }
 
+let getSpareUrls = srcUrl => {
+  if (srcUrl.startsWith("https://npm.elemecdn.com")) {
+    return {
+      timeout: 3000,
+      list: [srcUrl, `https://cdn.cbd.int/${new URL(srcUrl).pathname}`],
+    };
+  }
+}
 let isCors = () => false
 let isMemoryQueue = () => false
 const fetchFile = (request, banCache, urls = null) => {
