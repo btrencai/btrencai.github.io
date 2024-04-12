@@ -2823,7 +2823,7 @@ body {
   background: var(--global-bg);
   color: var(--font-color);
   font-size: var(--global-font-size);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Lato, Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-family: rencai-font;
   line-height: 2;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
@@ -2974,7 +2974,7 @@ a:hover {
 #site-name,
 #aside-content .author-info__name,
 #aside-content .author-info__description {
-  font-family: PingFang SC, 'Hiragino Sans GB', 'Microsoft JhengHei', 'Microsoft YaHei', sans-serif;
+  font-family: rencai-font, PingFang SC, 'Hiragino Sans GB', 'Microsoft JhengHei', 'Microsoft YaHei', sans-serif;
 }
 .is-center {
   text-align: center;
@@ -3325,7 +3325,7 @@ figure.highlight pre .javascript .function {
 #article-container pre,
 #article-container code {
   font-size: var(--global-font-size);
-  font-family: consolas, Menlo, "PingFang SC", "Microsoft JhengHei", "Microsoft YaHei", sans-serif !important;
+  font-family: consolas, rencai-font, Menlo, "PingFang SC", "Microsoft JhengHei", "Microsoft YaHei", sans-serif !important;
 }
 #article-container code {
   padding: 2px 4px;
@@ -3678,7 +3678,7 @@ figure.highlight pre .javascript .function {
   height: 100%;
   vertical-align: top;
   text-align: center;
-  font-family: PingFang SC, 'Hiragino Sans GB', 'Microsoft JhengHei', 'Microsoft YaHei', sans-serif;
+  font-family: rencai-font, PingFang SC, 'Hiragino Sans GB', 'Microsoft JhengHei', 'Microsoft YaHei', sans-serif;
 }
 @media screen and (max-width: 768px) {
   .error404 #error-wrap .error-content .error-info {
@@ -8507,7 +8507,7 @@ body:has(#console.show) #nav-music {
   color: var(--anzhiyu-lighttext);
 }
 #tag #tag-page-tags a {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Lato, Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-family: rencai-font;
   font-size: 0.9em;
 }
 #tag #tag-page-tags a:hover {
@@ -8526,7 +8526,7 @@ span.categoryes-punctuation .icon-biaoqian {
   font-size: 13px;
 }
 .tagsPageCount {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Lato, Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-family: rencai-font;
 }
 [data-theme="light"] #post .tag_share .post-meta__box__tags span.tagsPageCount {
   background-color: transparent;
@@ -8811,7 +8811,7 @@ h1.page-title + .tag-cloud-list {
   padding: 0.5rem;
   text-align: center;
   font-size: 14px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Lato, Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-family: rencai-font;
 }
 @media screen and (max-width: 768px) {
   #error-wrap .error-content .error-info {
