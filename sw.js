@@ -64,7 +64,7 @@ cdn: {
 clean: true,
 match: url =>
       [
-        "cdn.cbd.int",
+        "https://s4.zstatic.net/npm/",
         "lf26-cdn-tos.bytecdntp.com",
         "lf6-cdn-tos.bytecdntp.com",
         "lf3-cdn-tos.bytecdntp.com",
@@ -78,7 +78,7 @@ let getSpareUrls = srcUrl => {
   if (srcUrl.startsWith("https://npm.elemecdn.com")) {
     return {
       timeout: 3000,
-      list: [srcUrl, `https://cdn.cbd.int/${new URL(srcUrl).pathname}`],
+      list: [srcUrl, `https://s4.zstatic.net/npm/${new URL(srcUrl).pathname}`],
     };
   }
 }
