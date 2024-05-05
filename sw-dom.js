@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (response) {
           // 如果找到了匹配的缓存响应
           response.json().then(function(data) {
-            anzhiyuPopupManager && anzhiyuPopupManager.enqueuePopup('通知📢', `已刷新缓存，更新为${"No."+data.local}版本最新内容`, null, 5000);
+            anzhiyuPopupManager && anzhiyuPopupManager.enqueuePopup('通知📢', `已刷新缓存，更新为${data.local/10+"."+data.local%10}版本最新内容`, null, 5000);
           });
         } else {
           console.info('未找到匹配的缓存响应');
